@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": 403,
+    "message": "reCAPTCHA Enterprise API has not been used in project 123456789 before or it is disabled.",
+    "status": "PERMISSION_DENIED"
+  }
+}

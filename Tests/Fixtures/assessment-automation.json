@@ -1,0 +1,14 @@
+{
+  "tokenProperties": {
+    "valid": true,
+    "invalidReason": "INVALID_REASON_UNSPECIFIED",
+    "hostname": "www.example.org",
+    "action": "contact",
+    "createTime": "2026-10-07T08:12:01.894Z"
+  },
+  "riskAnalysis": {
+    "score": 0.1,
+    "reasons": ["AUTOMATION"]
+  },
+  "name": "projects/123456789/assessments/b6ac310000000001"
+}

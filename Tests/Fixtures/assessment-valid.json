@@ -1,0 +1,21 @@
+{
+  "tokenProperties": {
+    "valid": true,
+    "invalidReason": "INVALID_REASON_UNSPECIFIED",
+    "hostname": "www.example.org",
+    "action": "contact",
+    "createTime": "2026-10-07T08:12:01.894Z"
+  },
+  "riskAnalysis": {
+    "score": 0.9,
+    "reasons": []
+  },
+  "event": {
+    "token": "TOKEN",
+    "siteKey": "6Lexample-enterprise-key",
+    "userAgent": "",
+    "userIpAddress": "192.0.2.10",
+    "expectedAction": "contact"
+  },
+  "name": "projects/123456789/assessments/b6ac310000000000"
+}

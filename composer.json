@@ -1,0 +1,44 @@
+{
+    "name": "omniguard/recaptcha",
+    "type": "library",
+    "description": "Omniguard reCAPTCHA: Google's captcha - v2 checkbox and invisible, v3 score with its threshold and action, and reCAPTCHA Enterprise assessments - its token checked by direct calls, no Google library.",
+    "keywords": [
+        "captcha",
+        "recaptcha",
+        "google",
+        "antispam",
+        "omniguard"
+    ],
+    "homepage": "https://github.com/glitchr-studio/omniguard-recaptcha",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Marco Meyer",
+            "email": "marco.meyer@glitchr.io"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "glitchr/omniguard": "^1.0@dev",
+        "symfony/http-client": "^6.4|^7.0|^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Omniguard\\Recaptcha\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Omniguard\\Recaptcha\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,13 @@
+{
+  "tokenProperties": {
+    "valid": false,
+    "invalidReason": "DUPE",
+    "hostname": "",
+    "action": "",
+    "createTime": "1970-01-01T00:00:00Z"
+  },
+  "riskAnalysis": {
+    "reasons": []
+  },
+  "name": "projects/123456789/assessments/b6ac310000000002"
+}
