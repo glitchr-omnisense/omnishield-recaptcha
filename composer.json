@@ -10,7 +10,7 @@
         "omniguard"
     ],
     "homepage": "https://github.com/glitchr-studio/omniguard-recaptcha",
-    "license": "LGPL-3.0-or-later",
+    "license": "MIT",
     "authors": [
         {
             "name": "Marco Meyer",

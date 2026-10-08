@@ -35,4 +35,4 @@ and guard the form otherwise when they refuse (ALTCHA) - see omniguard's
 verified - v2 against Google with its test keys; v3 and Enterprise on answers written from
 Google's documentation, no key.
 
-License: LGPL-3.0-or-later.
+License: MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
