@@ -1,15 +1,15 @@
 <?php
 
-namespace Omniguard\Recaptcha;
+namespace Omnishield\Recaptcha;
 
-use Omniguard\ChallengeInterface;
-use Omniguard\Exception\InvalidKeyException;
-use Omniguard\Exception\ProviderException;
-use Omniguard\Http\Answer;
-use Omniguard\Model\Attempt;
-use Omniguard\Model\Capabilities;
-use Omniguard\Model\Verdict;
-use Omniguard\Model\Widget;
+use Omnishield\ChallengeInterface;
+use Omnishield\Exception\InvalidKeyException;
+use Omnishield\Exception\ProviderException;
+use Omnishield\Http\Answer;
+use Omnishield\Model\Attempt;
+use Omnishield\Model\Capabilities;
+use Omnishield\Model\Verdict;
+use Omnishield\Model\Widget;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -64,7 +64,7 @@ final class RecaptchaGateway implements ChallengeInterface
      * form's submission, once - then the form goes on.
      */
     private const SCRIPT = <<<'JS'
-(function(){document.querySelectorAll('[data-omniguard-recaptcha]:not([data-omniguard-bound])').forEach(function(el){el.setAttribute('data-omniguard-bound','');var form=el.closest('form'),input=el.querySelector('input'),mode=el.getAttribute('data-omniguard-recaptcha'),key=el.getAttribute('data-sitekey'),action=el.getAttribute('data-action')||'submit',id=null;if(!form||!input)return;form.addEventListener('submit',function(e){if(input.value||!window.grecaptcha)return;e.preventDefault();var g=window.grecaptcha,done=function(token){input.value=token;form.requestSubmit?form.requestSubmit(e.submitter||undefined):form.submit();};if(mode==='invisible'){g.ready(function(){if(id===null){id=g.render(el.querySelector('div'),{sitekey:key,size:'invisible',badge:el.getAttribute('data-badge')||'bottomright',callback:done});}g.execute(id);});}else{var api=mode==='enterprise'?g.enterprise:g;api.ready(function(){api.execute(key,{action:action}).then(done);});}});});})();
+(function(){document.querySelectorAll('[data-omnishield-recaptcha]:not([data-omnishield-bound])').forEach(function(el){el.setAttribute('data-omnishield-bound','');var form=el.closest('form'),input=el.querySelector('input'),mode=el.getAttribute('data-omnishield-recaptcha'),key=el.getAttribute('data-sitekey'),action=el.getAttribute('data-action')||'submit',id=null;if(!form||!input)return;form.addEventListener('submit',function(e){if(input.value||!window.grecaptcha)return;e.preventDefault();var g=window.grecaptcha,done=function(token){input.value=token;form.requestSubmit?form.requestSubmit(e.submitter||undefined):form.submit();};if(mode==='invisible'){g.ready(function(){if(id===null){id=g.render(el.querySelector('div'),{sitekey:key,size:'invisible',badge:el.getAttribute('data-badge')||'bottomright',callback:done});}g.execute(id);});}else{var api=mode==='enterprise'?g.enterprise:g;api.ready(function(){api.execute(key,{action:action}).then(done);});}});});})();
 JS;
 
     /** @param array<string, string|bool> $attributes */
@@ -122,7 +122,7 @@ JS;
         return new Widget(
             ...$common,
             tag: 'div',
-            attributes: ['data-omniguard-recaptcha' => $this->mode, 'data-sitekey' => $this->siteKey, 'data-action' => $action ?? false] + $this->attributes,
+            attributes: ['data-omnishield-recaptcha' => $this->mode, 'data-sitekey' => $this->siteKey, 'data-action' => $action ?? false] + $this->attributes,
             content: '<input type="hidden" name="'.self::FIELD.'" value="">'.(self::INVISIBLE === $this->mode ? '<div></div>' : ''),
             inline: self::SCRIPT,
         );

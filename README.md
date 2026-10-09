@@ -1,13 +1,13 @@
-# omniguard/recaptcha
+# omnishield/recaptcha
 
-**Google reCAPTCHA** for [glitchr/omniguard](https://github.com/glitchr-studio/omniguard), in its
+**Google reCAPTCHA** for [glitchr/omnishield](https://github.com/glitchr-studio/omnishield), in its
 four forms - v2 checkbox, v2 invisible, v3 score, Enterprise - checked by direct calls to Google:
 `siteverify` for v2 and v3, the assessments API for Enterprise. No Google library (`google/recaptcha`
 wants PHP 8.4 and takes no HTTP client of yours).
 
 ```php
-use Omniguard\Model\Attempt;
-use Omniguard\Recaptcha\RecaptchaGatewayFactory;
+use Omnishield\Model\Attempt;
+use Omnishield\Recaptcha\RecaptchaGatewayFactory;
 
 $gateway = (new RecaptchaGatewayFactory($httpClient))->create(['mode' => 'score', 'site_key' => $siteKey, 'secret' => $secret, 'threshold' => 0.5]);
 
@@ -19,7 +19,7 @@ $verdict->score;              // 0.9; under the threshold: reasons ['score']
 ```
 
 ```yaml
-omniguard:
+omnishield:
     gateways:
         google:
             factory: recaptcha
@@ -27,8 +27,8 @@ omniguard:
 ```
 
 reCAPTCHA reaches Google and sets a cookie (`_GRECAPTCHA`): load it after the visitor's consent,
-and guard the form otherwise when they refuse (ALTCHA) - see omniguard's
-[privacy](https://github.com/glitchr-studio/omniguard/blob/1.x/docs/privacy.md).
+and guard the form otherwise when they refuse (ALTCHA) - see omnishield's
+[privacy](https://github.com/glitchr-studio/omnishield/blob/1.x/docs/privacy.md).
 `glitchr/ux-google` keeps its own reCAPTCHA: this package neither touches nor needs it.
 
 [Documentation](docs/index.md): the four modes, the options, the answers, the test keys, what was
@@ -36,3 +36,5 @@ verified - v2 against Google with its test keys; v3 and Enterprise on answers wr
 Google's documentation, no key.
 
 License: MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
+
+Formerly `omniguard/recaptcha`, renamed on 2026-10-10 with its family (`glitchr/omnishield`).

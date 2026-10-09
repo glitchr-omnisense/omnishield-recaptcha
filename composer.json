@@ -1,15 +1,15 @@
 {
-    "name": "omniguard/recaptcha",
+    "name": "omnishield/recaptcha",
     "type": "library",
-    "description": "Omniguard reCAPTCHA: Google's captcha - v2 checkbox and invisible, v3 score with its threshold and action, and reCAPTCHA Enterprise assessments - its token checked by direct calls, no Google library.",
+    "description": "Omnishield reCAPTCHA: Google's captcha - v2 checkbox and invisible, v3 score with its threshold and action, and reCAPTCHA Enterprise assessments - its token checked by direct calls, no Google library.",
     "keywords": [
         "captcha",
         "recaptcha",
         "google",
         "antispam",
-        "omniguard"
+        "omnishield"
     ],
-    "homepage": "https://github.com/glitchr-studio/omniguard-recaptcha",
+    "homepage": "https://github.com/glitchr-studio/omnishield-recaptcha",
     "license": "MIT",
     "authors": [
         {
@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": ">=8.2",
-        "glitchr/omniguard": "^1.0@dev",
+        "glitchr/omnishield": "^1.0@dev",
         "symfony/http-client": "^6.4|^7.0|^8.0"
     },
     "require-dev": {
@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Omniguard\\Recaptcha\\": ""
+            "Omnishield\\Recaptcha\\": ""
         },
         "exclude-from-classmap": [
             "/Tests/"
@@ -35,7 +35,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Omniguard\\Recaptcha\\Tests\\": "Tests/"
+            "Omnishield\\Recaptcha\\Tests\\": "Tests/"
         }
     },
     "config": {

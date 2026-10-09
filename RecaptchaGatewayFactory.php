@@ -1,11 +1,11 @@
 <?php
 
-namespace Omniguard\Recaptcha;
+namespace Omnishield\Recaptcha;
 
-use Omniguard\Config;
-use Omniguard\Exception\InvalidConfigException;
-use Omniguard\GatewayFactory;
-use Omniguard\GatewayInterface;
+use Omnishield\Config;
+use Omnishield\Exception\InvalidConfigException;
+use Omnishield\GatewayFactory;
+use Omnishield\GatewayInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -42,9 +42,9 @@ final class RecaptchaGatewayFactory extends GatewayFactory
     protected function populate(Config $c): void
     {
         $c->defaults([
-            'omniguard.factory_name' => 'recaptcha',
-            'omniguard.factory_title' => 'Google reCAPTCHA',
-            'omniguard.required_options' => array_merge(['site_key'], 'enterprise' === ($c['mode'] ?? null) ? ['project_id', 'api_key'] : ['secret']),
+            'omnishield.factory_name' => 'recaptcha',
+            'omnishield.factory_title' => 'Google reCAPTCHA',
+            'omnishield.required_options' => array_merge(['site_key'], 'enterprise' === ($c['mode'] ?? null) ? ['project_id', 'api_key'] : ['secret']),
             'mode' => RecaptchaGateway::CHECKBOX,
             'secret' => null,
             'project_id' => null,

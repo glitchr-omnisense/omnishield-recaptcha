@@ -1,15 +1,15 @@
 <?php
 
-namespace Omniguard\Recaptcha\Tests;
+namespace Omnishield\Recaptcha\Tests;
 
-use Omniguard\ChallengeInterface;
-use Omniguard\Exception\InvalidConfigException;
-use Omniguard\Exception\InvalidKeyException;
-use Omniguard\Exception\UnreachableException;
-use Omniguard\Model\Attempt;
-use Omniguard\Model\Verdict;
-use Omniguard\Recaptcha\RecaptchaGateway;
-use Omniguard\Recaptcha\RecaptchaGatewayFactory;
+use Omnishield\ChallengeInterface;
+use Omnishield\Exception\InvalidConfigException;
+use Omnishield\Exception\InvalidKeyException;
+use Omnishield\Exception\UnreachableException;
+use Omnishield\Model\Attempt;
+use Omnishield\Model\Verdict;
+use Omnishield\Recaptcha\RecaptchaGateway;
+use Omnishield\Recaptcha\RecaptchaGatewayFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -131,12 +131,12 @@ final class RecaptchaGatewayTest extends TestCase
 
         $score = $this->gateway([], ['mode' => 'score', 'site_key' => 'v3key', 'domain' => 'www.recaptcha.net'])->widget();
         self::assertSame('https://www.recaptcha.net/recaptcha/api.js?render=v3key', $score->script);
-        self::assertSame(['data-omniguard-recaptcha' => 'score', 'data-sitekey' => 'v3key', 'data-action' => 'submit'], $score->attributes, 'the default action');
+        self::assertSame(['data-omnishield-recaptcha' => 'score', 'data-sitekey' => 'v3key', 'data-action' => 'submit'], $score->attributes, 'the default action');
         self::assertSame('<input type="hidden" name="g-recaptcha-response" value="">', $score->content);
         self::assertStringContainsString('api.execute(key,{action:action})', (string) $score->inline);
 
         $invisible = $this->gateway([], ['mode' => 'invisible', 'badge' => 'inline'])->widget();
-        self::assertSame(['data-omniguard-recaptcha' => 'invisible', 'data-sitekey' => RecaptchaGateway::TEST_SITE_KEY, 'data-action' => false, 'data-badge' => 'inline'], $invisible->attributes);
+        self::assertSame(['data-omnishield-recaptcha' => 'invisible', 'data-sitekey' => RecaptchaGateway::TEST_SITE_KEY, 'data-action' => false, 'data-badge' => 'inline'], $invisible->attributes);
         self::assertStringEndsWith('<div></div>', (string) $invisible->content);
 
         self::assertSame('https://www.google.com/recaptcha/enterprise.js?render=ekey', $this->gateway([], ['mode' => 'enterprise', 'site_key' => 'ekey', 'project_id' => 'p', 'api_key' => 'k'])->widget('login')->script);

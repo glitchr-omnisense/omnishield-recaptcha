@@ -1,17 +1,17 @@
 ---
-title: omniguard/recaptcha
+title: omnishield/recaptcha
 order: 1
 ---
 
-# omniguard/recaptcha
+# omnishield/recaptcha
 
 ## Installation
 
 ```sh
-composer require omniguard/recaptcha
+composer require omnishield/recaptcha
 ```
 
-PHP 8.2 or later, `glitchr/omniguard` and `symfony/http-client` (give the factory your
+PHP 8.2 or later, `glitchr/omnishield` and `symfony/http-client` (give the factory your
 application's client, a `MockHttpClient` in a test).
 
 ## The sources
@@ -81,7 +81,7 @@ widget shows a warning. v3 and Enterprise have none: Google advises a key of its
 
 | | |
 |---|---|
-| v2 test keys against `siteverify` | **done on 2026-10-07** (`docker compose run --rm omniguard bare --live`, the recorded answers): passes, from `testkey.google.com`, through `www.google.com` and `www.recaptcha.net` alike |
+| v2 test keys against `siteverify` | **done on 2026-10-07** (`docker compose run --rm omnishield bare --live`, the recorded answers): passes, from `testkey.google.com`, through `www.google.com` and `www.recaptcha.net` alike |
 | A made-up secret | **seen on 2026-10-07**: Google answers `invalid-input-response`, not `invalid-input-secret` - a wrong secret looks like a wrong token. Check a new secret with a real token before going live |
 | v2 with a real key, the widget in a browser | **not verified**: no Google account, no browser run |
 | v3 (`score`) | **not verified in real: no key** - the answers are written from the documentation's fields |
