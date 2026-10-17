@@ -11,7 +11,7 @@ order: 1
 composer require omnishield/recaptcha
 ```
 
-PHP 8.2 or later, `glitchr/omnishield` and `symfony/http-client` (give the factory your
+PHP 8.2 or later, `omniscient/omnishield` and `symfony/http-client` (give the factory your
 application's client, a `MockHttpClient` in a test).
 
 ## The sources

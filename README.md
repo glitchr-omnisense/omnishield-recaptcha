@@ -1,6 +1,6 @@
 # omnishield/recaptcha
 
-**Google reCAPTCHA** for [glitchr/omnishield](https://github.com/glitchr-studio/omnishield), in its
+**Google reCAPTCHA** for [omniscient/omnishield](https://github.com/glitchr-studio/omnishield), in its
 four forms - v2 checkbox, v2 invisible, v3 score, Enterprise - checked by direct calls to Google:
 `siteverify` for v2 and v3, the assessments API for Enterprise. No Google library (`google/recaptcha`
 wants PHP 8.4 and takes no HTTP client of yours).
