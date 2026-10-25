@@ -31,7 +31,7 @@ and guard the form otherwise when they refuse (ALTCHA) - see omnishield's
 [privacy](https://github.com/glitchr-studio/omnishield/blob/1.x/docs/privacy.md).
 `glitchr/ux-google` keeps its own reCAPTCHA: this package neither touches nor needs it.
 
-[Documentation](docs/index.md): the four modes, the options, the answers, the test keys, what was
+[Documentation](docs/index.md): what it calls, the credentials, the capabilities, an example run offline, the errors, the four modes, the options, the answers, the test keys, what was
 verified - v2 against Google with its test keys; v3 and Enterprise on answers written from
 Google's documentation, no key.
 
