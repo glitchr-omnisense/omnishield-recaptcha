@@ -81,6 +81,7 @@ widget shows a warning. v3 and Enterprise have none: Google advises a key of its
 
 | | |
 |---|---|
+| The family's conformance suite (`Omnishield\Testing\GatewayContractTests`) | **green on 2026-10-25**, offline: `Tests/RecaptchaContractTest.php` on the recorded v2 and written v3 answers; HTTP 401/403 now an `InvalidKeyException`, siteverify and Enterprise alike |
 | v2 test keys against `siteverify` | **done on 2026-10-07** (`docker compose run --rm omnishield bare --live`, the recorded answers): passes, from `testkey.google.com`, through `www.google.com` and `www.recaptcha.net` alike |
 | A made-up secret | **seen on 2026-10-07**: Google answers `invalid-input-response`, not `invalid-input-secret` - a wrong secret looks like a wrong token. Check a new secret with a real token before going live |
 | v2 with a real key, the widget in a browser | **not verified**: no Google account, no browser run |

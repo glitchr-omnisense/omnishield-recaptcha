@@ -141,6 +141,9 @@ JS;
     private function siteverify(Attempt $attempt): Verdict
     {
         $answer = Answer::send($this->http, 'recaptcha', 'POST', 'https://'.$this->domain.'/recaptcha/api/siteverify', ['body' => array_filter(['secret' => $this->secret, 'response' => $attempt->token, 'remoteip' => $attempt->ip])]);
+        if (\in_array($answer->status, [401, 403], true)) {
+            throw new InvalidKeyException('recaptcha', \sprintf('HTTP %d: the secret was refused.', $answer->status), (string) $answer->status);
+        }
         $data = $answer->json();
         $codes = array_values(array_map('strval', (array) ($data['error-codes'] ?? [])));
         if (array_intersect($codes, ['missing-input-secret', 'invalid-input-secret'])) {
@@ -169,6 +172,9 @@ JS;
             'query' => ['key' => $this->apiKey],
             'json' => ['event' => array_filter(['token' => $attempt->token, 'siteKey' => $this->siteKey, 'expectedAction' => $attempt->action, 'userIpAddress' => $attempt->ip])],
         ]);
+        if (\in_array($answer->status, [401, 403], true) && !str_starts_with(trim($answer->body), '{')) {
+            throw new InvalidKeyException('recaptcha', \sprintf('HTTP %d: the project or its API key was refused.', $answer->status), (string) $answer->status);
+        }
         $data = $answer->json();
         if (isset($data['error'])) {
             $status = (string) ($data['error']['status'] ?? $answer->status);
