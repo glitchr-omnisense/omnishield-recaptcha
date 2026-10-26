@@ -9,7 +9,7 @@
         "antispam",
         "omnishield"
     ],
-    "homepage": "https://github.com/glitchr-studio/omnishield-recaptcha",
+    "homepage": "https://github.com/glitchr-omnisense/omnishield-recaptcha",
     "license": "MIT",
     "authors": [
         {
@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": ">=8.2",
-        "omniscient/omnishield": "^1.0@dev",
+        "omnisense/omnishield": "^1.0@dev",
         "symfony/http-client": "^6.4|^7.0|^8.0"
     },
     "require-dev": {

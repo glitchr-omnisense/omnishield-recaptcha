@@ -6,7 +6,7 @@ Enterprise. The widget is Google's script (`https://www.google.com/recaptcha/api
 `POST https://<domain>/recaptcha/api/siteverify` (v2, v3) or by an assessment,
 `POST https://recaptchaenterprise.googleapis.com/v1/projects/<project_id>/assessments?key=<api_key>`
 (Enterprise). The visitor's browser talks to Google and Google sets the `_GRECAPTCHA` cookie: load
-it after consent ([privacy](https://github.com/glitchr-studio/omnishield/blob/1.x/docs/privacy.md)).
+it after consent ([privacy](https://github.com/glitchr-omnisense/omnishield/blob/1.x/docs/privacy.md)).
 
 ## Installation
 
@@ -14,7 +14,7 @@ it after consent ([privacy](https://github.com/glitchr-studio/omnishield/blob/1.
 composer require omnishield/recaptcha
 ```
 
-PHP 8.2 or later, `omniscient/omnishield` and `symfony/http-client` (give the factory your
+PHP 8.2 or later, `omnisense/omnishield` and `symfony/http-client` (give the factory your
 application's client, a `MockHttpClient` in a test).
 
 ## Credentials
