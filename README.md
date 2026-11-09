@@ -50,4 +50,4 @@ commercial use of it, and accept no liability for how it is used (see [LICENSE](
 
 License: MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
 
-Formerly `omniguard/recaptcha`, renamed on 2026-10-10 with its family (`glitchr/omnishield`).
+Formerly `omniguard/recaptcha`, renamed on 2026-10-10 with its family (`glitchr/omniguard`, now `omnisense/omnishield`).
