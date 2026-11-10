@@ -2,6 +2,9 @@
 
 namespace Omnishield\Recaptcha;
 
+use Omnisense\Contracts\Policy\Backoff;
+use Omnisense\Contracts\Policy\DeclaresUsagePolicyInterface;
+use Omnisense\Contracts\Policy\UsagePolicy;
 use Omnishield\ChallengeInterface;
 use Omnishield\Exception\InvalidKeyException;
 use Omnishield\Exception\ProviderException;
@@ -29,8 +32,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * Google for a token in the invisible and score modes - is a short script
  * of this package's, printed with the widget.
  */
-final class RecaptchaGateway implements ChallengeInterface
+final class RecaptchaGateway implements ChallengeInterface, DeclaresUsagePolicyInterface
 {
+    /** The usage policy its package declares (omnisense/contracts' schema). */
+    public const POLICY = __DIR__.'/policy.json';
+
+    private static ?UsagePolicy $policy = null;
+
     public const CHECKBOX = 'checkbox';
     public const INVISIBLE = 'invisible';
     public const SCORE = 'score';
@@ -80,6 +88,7 @@ JS;
         private readonly string $domain = 'www.google.com',
         private readonly ?string $language = null,
         private readonly array $attributes = [],
+        private readonly ?Backoff $backoff = null,
     ) {
     }
 
@@ -102,7 +111,13 @@ JS;
     {
         $scored = \in_array($this->mode, [self::SCORE, self::ENTERPRISE], true);
 
-        return new Capabilities(challenge: true, thirdParty: true, cookies: true, scores: $scored, actions: $scored);
+        return new Capabilities(challenge: true, thirdParty: true, cookies: true, scores: $scored, actions: $scored, policy: $this->usagePolicy());
+    }
+
+    /** Its usage policy, as its package declares it: policy.json beside this class. */
+    public function usagePolicy(): UsagePolicy
+    {
+        return self::$policy ??= UsagePolicy::fromFile(self::POLICY);
     }
 
     public function widget(?string $action = null): Widget
@@ -140,7 +155,7 @@ JS;
 
     private function siteverify(Attempt $attempt): Verdict
     {
-        $answer = Answer::send($this->http, 'recaptcha', 'POST', 'https://'.$this->domain.'/recaptcha/api/siteverify', ['body' => array_filter(['secret' => $this->secret, 'response' => $attempt->token, 'remoteip' => $attempt->ip])]);
+        $answer = Answer::send($this->http, 'recaptcha', 'POST', 'https://'.$this->domain.'/recaptcha/api/siteverify', ['body' => array_filter(['secret' => $this->secret, 'response' => $attempt->token, 'remoteip' => $attempt->ip])], $this->backoff);
         if (\in_array($answer->status, [401, 403], true)) {
             throw new InvalidKeyException('recaptcha', \sprintf('HTTP %d: the secret was refused.', $answer->status), (string) $answer->status);
         }
@@ -171,7 +186,7 @@ JS;
         $answer = Answer::send($this->http, 'recaptcha', 'POST', \sprintf('https://recaptchaenterprise.googleapis.com/v1/projects/%s/assessments', rawurlencode((string) $this->projectId)), [
             'query' => ['key' => $this->apiKey],
             'json' => ['event' => array_filter(['token' => $attempt->token, 'siteKey' => $this->siteKey, 'expectedAction' => $attempt->action, 'userIpAddress' => $attempt->ip])],
-        ]);
+        ], $this->backoff);
         if (\in_array($answer->status, [401, 403], true) && !str_starts_with(trim($answer->body), '{')) {
             throw new InvalidKeyException('recaptcha', \sprintf('HTTP %d: the project or its API key was refused.', $answer->status), (string) $answer->status);
         }

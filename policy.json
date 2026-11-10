@@ -1,0 +1,58 @@
+{
+    "$schema": "https://github.com/glitchr-omnisense/contracts/blob/1.x/resources/usage-policy.schema.json",
+    "provider": "recaptcha",
+    "rateLimits": [
+        {
+            "max": 1000,
+            "window": "second",
+            "scope": "key",
+            "operations": [
+                "verify"
+            ],
+            "note": "Above 1,000 calls a second a site key needs reCAPTCHA Enterprise or an approved exception (FAQ)."
+        },
+        {
+            "max": 1000000,
+            "window": "month",
+            "scope": "key",
+            "operations": [
+                "verify"
+            ],
+            "note": "\"Site keys are considered over quota if more than 1,000,000 calls per month are used for any domain\" (FAQ); counted per key here, the stricter form of per domain."
+        }
+    ],
+    "rights": {
+        "commercial": "allowed",
+        "openSourceRequired": null,
+        "caching": {
+            "permission": "unknown",
+            "maxTtl": null
+        },
+        "storage": "unknown",
+        "redistribution": "unknown",
+        "attribution": {
+            "required": true,
+            "text": "This site is protected by reCAPTCHA.",
+            "url": null,
+            "where": [
+                "display"
+            ]
+        },
+        "licence": null
+    },
+    "requirements": {
+        "key": true,
+        "userAgent": {
+            "required": false,
+            "pattern": null
+        }
+    },
+    "provenance": {
+        "terms": "https://developers.google.com/terms",
+        "policy": "https://developers.google.com/recaptcha/docs/faq",
+        "contact": null,
+        "notes": "Limits from the FAQ for keys of the classic API (siteverify). Pricing (docs.cloud.google.com/recaptcha/docs/compare-tiers, 2026-11-10): Essentials free up to 10,000 assessments a calendar month per organization (all its accounts and sites together); Premium free to 10,000, then USD 8 flat for 10,001-100,000 and USD 1 per 1,000 above, with a billing account; Enterprise a fixed monthly commitment at USD 1 per 1,000. Those are prices, not limits: not declared as rate limits, a site on Essentials may declare 10,000 a month as its own tightening. The badge may be hidden only if the reCAPTCHA branding stays visible in the user flow, with the text \"This site is protected by reCAPTCHA.\": attribution declared required. Caching, storage and redistribution not addressed.",
+        "verifiedAt": "2026-11-10",
+        "declaredBy": "maintainer"
+    }
+}

@@ -83,6 +83,7 @@ final class RecaptchaGatewayFactory extends GatewayFactory
             domain: $c->string('domain') ?? 'www.google.com',
             language: $c->string('language'),
             attributes: array_filter(['data-theme' => $c->string('theme'), 'data-size' => $c->string('size'), 'data-badge' => $c->string('badge')]) + (array) $c['attributes'],
+            backoff: $c->backoff(),
         );
     }
 }
