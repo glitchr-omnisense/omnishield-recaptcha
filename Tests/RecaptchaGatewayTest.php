@@ -92,6 +92,23 @@ final class RecaptchaGatewayTest extends TestCase
         self::assertSame([Verdict::ACTION, Verdict::HOSTNAME], $this->gateway(['siteverify-v3-human.json'], $options)->verify(new Attempt('t', action: 'signup', hostname: 'evil.example'))->reasons);
     }
 
+    public function testAScoreThatIsNotANumberIsNoScore(): void
+    {
+        $options = ['mode' => 'score', 'site_key' => '6Lexample-v3-key', 'secret' => 'v3-secret'];
+
+        foreach (['true', '[0.9]', '"high"', '"0.9 of 1"'] as $score) {
+            $answer = new MockResponse('{"success": true, "score": '.$score.', "action": "contact", "hostname": "www.example.org"}');
+            $verdict = $this->gateway([$answer], $options)->verify(new Attempt('t', action: 'contact', hostname: 'www.example.org'));
+            self::assertFalse($verdict->passed, $score);
+            self::assertSame([null, [Verdict::SCORE]], [$verdict->score, $verdict->reasons], $score);
+        }
+
+        $options = ['mode' => 'enterprise', 'site_key' => '6Lexample-enterprise-key', 'project_id' => 'my-project', 'api_key' => 'AIzaExample'];
+        $answer = new MockResponse('{"tokenProperties": {"valid": true, "action": "contact", "hostname": "www.example.org"}, "riskAnalysis": {"score": true}}');
+        $verdict = $this->gateway([$answer], $options)->verify(new Attempt('TOKEN', action: 'contact', hostname: 'www.example.org'));
+        self::assertSame([false, null, [Verdict::SCORE]], [$verdict->passed, $verdict->score, $verdict->reasons]);
+    }
+
     public function testAnEnterpriseAssessment(): void
     {
         $options = ['mode' => 'enterprise', 'site_key' => '6Lexample-enterprise-key', 'project_id' => 'my-project', 'api_key' => 'AIzaExample'];

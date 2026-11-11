@@ -168,7 +168,7 @@ JS;
             throw new ProviderException('recaptcha', 'The request was not understood: bad-request.', 'bad-request');
         }
 
-        $score = isset($data['score']) ? (float) $data['score'] : null;
+        $score = self::score($data['score'] ?? null);
         $action = isset($data['action']) && '' !== $data['action'] ? (string) $data['action'] : null;
         $hostname = isset($data['hostname']) && '' !== $data['hostname'] ? (string) $data['hostname'] : null;
         $at = self::date($data['challenge_ts'] ?? null);
@@ -202,7 +202,7 @@ JS;
 
         $token = (array) ($data['tokenProperties'] ?? []);
         $risk = (array) ($data['riskAnalysis'] ?? []);
-        $score = isset($risk['score']) ? (float) $risk['score'] : null;
+        $score = self::score($risk['score'] ?? null);
         $action = isset($token['action']) && '' !== $token['action'] ? (string) $token['action'] : null;
         $hostname = isset($token['hostname']) && '' !== $token['hostname'] ? (string) $token['hostname'] : null;
         $at = self::date($token['createTime'] ?? null);
@@ -234,6 +234,15 @@ JS;
         }
 
         return new Verdict([] === $reasons, $score, $action, $hostname, $at, $reasons, $codes);
+    }
+
+    /**
+     * The score, a number as Google sends it; anything else is no score, which the score modes
+     * refuse (a true or a list once read as 1.0 and passed, a text as 0.0).
+     */
+    private static function score(mixed $value): ?float
+    {
+        return \is_int($value) || \is_float($value) || \is_string($value) && is_numeric($value) ? (float) $value : null;
     }
 
     private static function date(mixed $value): ?\DateTimeImmutable
