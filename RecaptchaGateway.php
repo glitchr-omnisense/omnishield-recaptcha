@@ -160,7 +160,7 @@ JS;
             throw new InvalidKeyException('recaptcha', \sprintf('HTTP %d: the secret was refused.', $answer->status), (string) $answer->status);
         }
         $data = $answer->json();
-        $codes = array_values(array_map('strval', (array) ($data['error-codes'] ?? [])));
+        $codes = self::texts($data['error-codes'] ?? []);
         if (array_intersect($codes, ['missing-input-secret', 'invalid-input-secret'])) {
             throw new InvalidKeyException('recaptcha', 'The secret was refused: '.implode(', ', $codes).'.', $codes[0]);
         }
@@ -169,8 +169,8 @@ JS;
         }
 
         $score = self::score($data['score'] ?? null);
-        $action = isset($data['action']) && '' !== $data['action'] ? (string) $data['action'] : null;
-        $hostname = isset($data['hostname']) && '' !== $data['hostname'] ? (string) $data['hostname'] : null;
+        $action = self::textOrNull($data['action'] ?? null);
+        $hostname = self::textOrNull($data['hostname'] ?? null);
         $at = self::date($data['challenge_ts'] ?? null);
         if (true !== ($data['success'] ?? null)) {
             $reasons = array_values(array_unique(array_map(static fn (string $code) => self::REASONS[$code] ?? Verdict::INVALID, $codes ?: ['invalid-input-response'])));
@@ -192,8 +192,9 @@ JS;
         }
         $data = $answer->json();
         if (isset($data['error'])) {
-            $status = (string) ($data['error']['status'] ?? $answer->status);
-            $message = (string) ($data['error']['message'] ?? 'an error');
+            $error = \is_array($data['error']) ? $data['error'] : [];
+            $status = self::text($error['status'] ?? $answer->status);
+            $message = self::text($error['message'] ?? 'an error');
             if (\in_array($answer->status, [401, 403], true) || 'PERMISSION_DENIED' === $status || 'UNAUTHENTICATED' === $status || str_contains(strtolower($message), 'api key')) {
                 throw new InvalidKeyException('recaptcha', 'The project or its API key was refused: '.$message, $status);
             }
@@ -203,12 +204,12 @@ JS;
         $token = (array) ($data['tokenProperties'] ?? []);
         $risk = (array) ($data['riskAnalysis'] ?? []);
         $score = self::score($risk['score'] ?? null);
-        $action = isset($token['action']) && '' !== $token['action'] ? (string) $token['action'] : null;
-        $hostname = isset($token['hostname']) && '' !== $token['hostname'] ? (string) $token['hostname'] : null;
+        $action = self::textOrNull($token['action'] ?? null);
+        $hostname = self::textOrNull($token['hostname'] ?? null);
         $at = self::date($token['createTime'] ?? null);
-        $codes = array_values(array_map('strval', (array) ($risk['reasons'] ?? [])));
+        $codes = self::texts($risk['reasons'] ?? []);
         if (true !== ($token['valid'] ?? null)) {
-            $invalid = (string) ($token['invalidReason'] ?? 'UNKNOWN_INVALID_REASON');
+            $invalid = self::text($token['invalidReason'] ?? 'UNKNOWN_INVALID_REASON');
 
             return new Verdict(false, $score, $action, $hostname, $at, [self::INVALID_REASONS[$invalid] ?? Verdict::INVALID], [$invalid, ...$codes]);
         }
@@ -234,6 +235,35 @@ JS;
         }
 
         return new Verdict([] === $reasons, $score, $action, $hostname, $at, $reasons, $codes);
+    }
+
+    /** A field as the (string) cast read it: a scalar as text; anything else, which no answer holds, empty. */
+    private static function text(mixed $value): string
+    {
+        return \is_scalar($value) ? (string) $value : '';
+    }
+
+    /** A field as text, null when empty or absent, as the isset() and '' checks read it. */
+    private static function textOrNull(mixed $value): ?string
+    {
+        return null === $value || '' === $value ? null : self::text($value);
+    }
+
+    /**
+     * A list of codes as strval() read them (one given alone as a list of one); what is not a scalar is left out.
+     *
+     * @return list<string>
+     */
+    private static function texts(mixed $value): array
+    {
+        $texts = [];
+        foreach ((array) $value as $one) {
+            if (\is_scalar($one) || null === $one) {
+                $texts[] = (string) $one;
+            }
+        }
+
+        return $texts;
     }
 
     /**

@@ -24,17 +24,20 @@ use Symfony\Component\HttpClient\Response\MockResponse;
  */
 final class RecaptchaGatewayTest extends TestCase
 {
-    /** @var list<array{string, string, array<string, mixed>}> */
+    /** @var list<array{string, string, mixed}> */
     private array $calls = [];
 
-    /** @param list<string|MockResponse> $answers */
+    /**
+     * @param list<string|MockResponse> $answers
+     * @param array<string, mixed>      $options
+     */
     private function gateway(array $answers, array $options = []): ChallengeInterface
     {
         $http = new MockHttpClient(function (string $method, string $url, array $options) use (&$answers): MockResponse {
             if (isset($options['body']) && \is_string($options['body']) && !str_starts_with($options['body'], '{')) {
                 parse_str($options['body'], $body);
             } else {
-                $body = json_decode((string) ($options['body'] ?? 'null'), true);
+                $body = json_decode(\is_string($options['body'] ?? null) ? $options['body'] : 'null', true);
             }
             $this->calls[] = [$method, $url, $body];
             $answer = array_shift($answers) ?? throw new \LogicException('No answer left.');
@@ -46,7 +49,10 @@ final class RecaptchaGatewayTest extends TestCase
             return new MockResponse((string) file_get_contents(__DIR__.'/Fixtures/'.$file), ['http_code' => (int) $status, 'response_headers' => ['content-type' => 'application/json; charset=utf-8']]);
         });
 
-        return (new RecaptchaGatewayFactory($http))->create($options + ['site_key' => RecaptchaGateway::TEST_SITE_KEY, 'secret' => RecaptchaGateway::TEST_SECRET]);
+        $gateway = (new RecaptchaGatewayFactory($http))->create($options + ['site_key' => RecaptchaGateway::TEST_SITE_KEY, 'secret' => RecaptchaGateway::TEST_SECRET]);
+        self::assertInstanceOf(ChallengeInterface::class, $gateway);
+
+        return $gateway;
     }
 
     public function testTheTestKeysPassAnyTokenWhateverTheHost(): void
