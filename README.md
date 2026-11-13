@@ -35,6 +35,14 @@ and guard the form otherwise when they refuse (ALTCHA) - see omnishield's
 verified - v2 against Google with its test keys; v3 and Enterprise on answers written from
 Google's documentation, no key.
 
+## Install
+
+```sh
+composer require omnishield/recaptcha
+```
+
+It brings the family's core, `omnisense/omnishield`, and `omnisense/contracts` with it. **A reCAPTCHA site key and secret are needed** (a Google account; Enterprise, a Google Cloud project). Google's published test keys answer a v2 check without an account ([docs/](docs/index.md)).
+
 ## Usage policy
 
 [`policy.json`](policy.json) (omnisense/contracts' schema, read at the provider's terms on 2026-11-10; its `provenance.notes` says what was read where): `verify`: 1,000 a second and 1,000,000 a month per key (the FAQ's quota); "This site is protected by reCAPTCHA." shown where the badge is hidden. The 10,000 free assessments a month are a price, in the notes: a site on the free tier can declare them as its own limit. A 429 and its `Retry-After` hold the next calls (`UnreachableException::retryAfter()`). See the core's [usage policies](https://github.com/glitchr-omnisense/omnishield/blob/1.x/docs/policies.md).

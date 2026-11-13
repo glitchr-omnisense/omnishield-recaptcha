@@ -19,8 +19,8 @@
     ],
     "require": {
         "php": ">=8.2",
-        "omnisense/contracts": "^1.0@dev",
-        "omnisense/omnishield": "^1.0@dev",
+        "omnisense/contracts": "^1.0",
+        "omnisense/omnishield": "^1.0",
         "symfony/http-client": "^6.4|^7.0|^8.0"
     },
     "require-dev": {
@@ -42,7 +42,7 @@
     "config": {
         "sort-packages": true
     },
-    "extra": {
+    "extra": {"branch-alias": {"dev-1.x": "1.x-dev"}, 
         "omnisense": {
             "policy": "policy.json"
         }
